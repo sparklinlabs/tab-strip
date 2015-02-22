@@ -10,9 +10,9 @@ module.exports = class TabStrip extends EventEmitter
     container.appendChild @tabsRoot
 
     @tabsRoot.addEventListener 'mousedown', @_onTabMouseDown
-    @tabsRoot.addEventListener 'click', @_onTabClick
+    @tabsRoot.addEventListener 'mouseup', @_onTabMouseUp
 
-  _onTabClick: (event) =>
+  _onTabMouseUp: (event) =>
     # Only handle middle-click and ignore clicks outside any tab
     return if event.button != 1 or event.target.parentElement != @tabsRoot
 
