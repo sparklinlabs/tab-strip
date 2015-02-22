@@ -14,7 +14,7 @@ npm install tab-strip
 Check out the [live demo](http://sparklinlabs.bitbucket.org/tab-strip/doc/demo/) and its [source code](https://bitbucket.org/sparklinlabs/tab-strip/src/tip/src/demo/).
 
  * Include ``TabStrip.js`` in your page.
- * Create a container element, call ``tabStrip = new Tabstrip(container)``.
+ * Create a container element, call ``tabStrip = new TabStrip(container)``.
  * Create a list item element (``<li>``), put whatever you want inside.
  * Use ``tabStrip.tabsRoot.appendChild(item)``.
 
