@@ -1,0 +1,38 @@
+{
+  "name": "tab-strip",
+  "version": "1.0.0",
+  "description": "HTML5 draggable tab strip widget",
+  "author": "Elisée Maurer <elisee@sparklinlabs.com>",
+  "main": "./lib/TabStrip.js",
+  "keywords": [
+    "tabstrip",
+    "tabs",
+    "tab",
+    "widget",
+    "reorderable",
+    "draggable",
+    "dnd",
+    "drag'n'drop"
+  ],
+  "repository": {
+    "type": "hg",
+    "url": "https://bitbucket.org/sparklinlabs/tab-strip"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "coffee-script": "^1.9.1",
+    "coffeeify": "^1.0.0",
+    "gulp": "^3.8.11",
+    "gulp-derequire": "^2.0.0",
+    "gulp-jade": "^1.0.0",
+    "gulp-stylus": "^2.0.1",
+    "nib": "^1.1.0",
+    "vinyl-source-stream": "^1.0.0"
+  },
+  "browserify": {
+    "transform": [
+      "coffeeify"
+    ]
+  }
+}

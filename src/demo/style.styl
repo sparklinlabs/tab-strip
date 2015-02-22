@@ -1,0 +1,74 @@
+@import 'nib'
+
+*
+  box-sizing border-box
+
+html, body
+  height 100%
+  margin 0
+
+body
+  font-family Arial
+  font-size 14px
+  display flex
+  flex-flow column
+  background-color #eee
+
+.tabs-container
+  margin 1em 1em 0 1em
+
+.panes
+  background-color #fff
+  border 1px solid #888
+  flex 1
+  margin 0 1em 1em 1em
+  padding 1em
+
+  overflow-y auto
+
+  > :not(.active)
+    display none
+  
+  h1
+    margin 0
+    margin-bottom 0.5em
+
+ol.tab-strip
+  height 30px
+  display flex
+  margin 0
+  padding 0
+
+  user-select none
+  cursor default
+
+  > li
+    display flex
+    align-items center
+    width 160px
+    height 30px
+    border 1px solid #bbb
+    border-bottom none
+    background #ddd
+
+    &.dragged
+      position absolute
+      z-index 1000
+
+    &.drop-placeholder
+      background none
+      border none
+
+    &:not(.active)
+      color #888
+
+    &:hover
+      background #eee
+
+    &.active
+      background #fff
+
+  > li .label
+      padding 0 0.5em
+      /* IMPORTANT: Let mouse events pass through to the tab button */
+      pointer-events none
