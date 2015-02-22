@@ -1,6 +1,6 @@
 {
   "name": "tab-strip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "HTML5 draggable tab strip widget",
   "author": "Elisée Maurer <elisee@sparklinlabs.com>",
   "main": "./lib/TabStrip.js",
