@@ -42,6 +42,7 @@ module.exports = class TabStrip extends EventEmitter
     tabElement.setCapture?()
 
     tabPlaceholderElement = document.createElement 'li'
+    tabPlaceholderElement.style.width = "#{tabRect.width}px"
     tabPlaceholderElement.className = 'drop-placeholder'
     tabElement.parentElement.insertBefore tabPlaceholderElement, tabElement.nextSibling
 
