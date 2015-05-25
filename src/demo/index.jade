@@ -14,29 +14,33 @@ html
         h1 Pane 2
       div.pane-3
         h1 Pane 3
-    script
-      :coffee
-        tabStrip = new TabStrip document.querySelector '.tabs-container'
+    script.
+      var tabStrip = new TabStrip(document.querySelector(".tabs-container"));
 
-        for pane, i in document.querySelectorAll('.panes > div')
-          tab = document.createElement('li')
-          tab.dataset.pane = "pane-#{i+1}"
+      var panes = document.querySelectorAll(".panes > div");
+      for (var i = 0; i < panes.length; i++) {
+        var pane = panes[i];
 
-          tabLabel = document.createElement('span')
-          tabLabel.classList.add 'label'
-          tabLabel.textContent = "Pane #{i+1}"
-          tab.appendChild tabLabel
+        var tab = document.createElement("li");
+        tab.dataset.pane = "pane-" + (i+1);
 
-          tabStrip.tabsRoot.appendChild tab
+        var tabLabel = document.createElement("span");
+        tabLabel.classList.add("label");
+        tabLabel.textContent = "Pane " + (i+1);
+        tab.appendChild(tabLabel);
 
-          if i == 0
-            tab.classList.add 'active'
-            document.querySelector(".panes .#{tab.dataset.pane}").classList.add 'active'
+        tabStrip.tabsRoot.appendChild(tab);
 
-        tabStrip.on 'activateTab', (tab) ->
-          tabStrip.tabsRoot.querySelector('.active').classList.remove 'active'
-          tab.classList.add 'active'
+        if (i === 0) {
+          tab.classList.add("active");
+          document.querySelector(".panes ." + tab.dataset.pane).classList.add("active");
+        }
+      }
 
-          document.querySelector('.panes > .active').classList.remove 'active'
-          document.querySelector(".panes .#{tab.dataset.pane}").classList.add 'active'
-          return
+      tabStrip.on("activateTab", function(tab) {
+        tabStrip.tabsRoot.querySelector(".active").classList.remove("active");
+        tab.classList.add("active");
+
+        document.querySelector(".panes > .active").classList.remove("active");
+        document.querySelector(".panes ." + tab.dataset.pane).classList.add("active");
+      });
