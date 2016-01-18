@@ -1,15 +1,22 @@
 doctype html
 html
   head
-    link(rel='stylesheet',href='style.css')
-    script(src='../../lib/TabStrip.js')
+    link(rel="stylesheet",href="index.css")
+    script(src="TabStrip.js")
   body
+    header
+      h1
+        a(href="https://github.com/sparklinlabs") sparklinlabs
+        |  / 
+        a(href="https://github.com/sparklinlabs/tab-strip") tab-strip
+      p An HTML5 draggable tab strip widget
+    
     .tabs-container
     .panes
       div.pane-1.active
         h1 Pane 1
 
-        p This is a demo of the <a href="http://bitbucket.org/sparklinlabs/tab-strip">tab-strip package</a>.
+        p This is a demo of the <a href="http://npmjs.com/package/tab-strip">tab-strip package</a>.
       div.pane-2
         h1 Pane 2
       div.pane-3

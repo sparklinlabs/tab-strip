@@ -1,9 +1,19 @@
 {
   "name": "tab-strip",
-  "version": "1.1.0",
   "description": "HTML5 draggable tab strip widget",
+  "version": "1.2.0",
   "author": "Elisée Maurer <elisee@sparklinlabs.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sparklinlabs/tab-strip"
+  },
+  "license": "ISC",
   "main": "./lib/TabStrip.js",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js -w",
+    "start": "http-server lib"
+  },
   "keywords": [
     "tabstrip",
     "tabs",
@@ -14,19 +24,11 @@
     "dnd",
     "drag'n'drop"
   ],
-  "repository": {
-    "type": "hg",
-    "url": "https://bitbucket.org/sparklinlabs/tab-strip"
-  },
-  "license": "MIT",
   "devDependencies": {
-    "browserify": "^10.1.3",
-    "gulp": "^3.8.11",
-    "gulp-jade": "^1.0.0",
-    "gulp-stylus": "^2.0.1",
-    "gulp-typescript": "^2.7.5",
-    "nib": "^1.1.0",
-    "typescript": "1.5.0-alpha",
-    "vinyl-source-stream": "^1.1.0"
+    "http-server": "~0.8.5",
+    "jade": "~1.11.0",
+    "stylus": "~0.53.0",
+    "typescript": "1.6.2",
+    "watchify": "~3.7.0"
   }
 }

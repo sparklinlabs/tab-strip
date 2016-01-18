@@ -3,7 +3,6 @@
 import { EventEmitter } from "events";
 
 class TabStrip extends EventEmitter {
-
   tabsRoot: HTMLOListElement;
 
   constructor(container: HTMLElement) {
@@ -18,7 +17,7 @@ class TabStrip extends EventEmitter {
   }
 
   _onTabMouseUp = (event: MouseEvent) => {
-    let tabElement = <HTMLElement>event.target;
+    let tabElement = event.target as HTMLLIElement;
 
     // Only handle middle-click and ignore clicks outside any tab
     if (event.button !== 1 || tabElement.parentElement !== this.tabsRoot) return;
@@ -27,7 +26,7 @@ class TabStrip extends EventEmitter {
   };
 
   _onTabMouseDown = (event: MouseEvent) => {
-    let tabElement = <HTMLElement>event.target;
+    let tabElement = event.target as HTMLLIElement;
 
     // Only handle left-click
     if (event.button !== 0 || tabElement.parentElement !== this.tabsRoot) return;
@@ -46,9 +45,9 @@ class TabStrip extends EventEmitter {
 
     // NOTE: set/releaseCapture aren"t supported in Chrome yet
     // hence the conditional call
-    if ((<any>tabElement).setCapture != null) (<any>tabElement).setCapture();
+    if ((tabElement as any).setCapture != null) (tabElement as any).setCapture();
 
-    let tabPlaceholderElement = <HTMLLIElement>document.createElement("li");
+    let tabPlaceholderElement = document.createElement("li") as HTMLLIElement;
     tabPlaceholderElement.style.width = `${tabRect.width}px`;
     tabPlaceholderElement.className = "drop-placeholder";
     tabElement.parentElement.insertBefore(tabPlaceholderElement, tabElement.nextSibling);
@@ -68,8 +67,8 @@ class TabStrip extends EventEmitter {
       if (tabLeft < tabPlaceholderElement.getBoundingClientRect().left) {
         let otherTabElement = tabPlaceholderElement;
         while (true) {
-          otherTabElement = <HTMLLIElement>tabPlaceholderElement.previousSibling;
-          if (otherTabElement === tabElement) otherTabElement = <HTMLLIElement>otherTabElement.previousSibling;
+          otherTabElement = tabPlaceholderElement.previousSibling as HTMLLIElement;
+          if (otherTabElement === tabElement) otherTabElement = otherTabElement.previousSibling as HTMLLIElement;
           if (otherTabElement == null) break;
 
           let otherTabCenter = otherTabElement.getBoundingClientRect().left + otherTabElement.getBoundingClientRect().width / 2;
@@ -80,8 +79,8 @@ class TabStrip extends EventEmitter {
       } else {
         let otherTabElement = tabPlaceholderElement;
         while (true) {
-          otherTabElement = <HTMLLIElement>tabPlaceholderElement.nextSibling;
-          if (otherTabElement === tabElement) otherTabElement = <HTMLLIElement>otherTabElement.nextSibling;
+          otherTabElement = tabPlaceholderElement.nextSibling as HTMLLIElement;
+          if (otherTabElement === tabElement) otherTabElement = otherTabElement.nextSibling as HTMLLIElement;
           if (otherTabElement == null) break;
 
           let otherTabCenter = otherTabElement.getBoundingClientRect().left + otherTabElement.getBoundingClientRect().width / 2;
@@ -96,12 +95,12 @@ class TabStrip extends EventEmitter {
       }
     };
 
-    let onDragTab = (event: MouseEvent) => { updateDraggedTab(event.clientX) };
+    let onDragTab = (event: MouseEvent) => { updateDraggedTab(event.clientX); };
 
     let onDropTab = (event: MouseEvent) => {
       // NOTE: set/releaseCapture aren't supported in Chrome yet
       // hence the conditional call
-      if ((<any>tabElement).releaseCapture != null) (<any>tabElement).releaseCapture();
+      if ((tabElement as any).releaseCapture != null) (tabElement as any).releaseCapture();
 
       if (tabPlaceholderElement.parentElement != null) {
         this.tabsRoot.replaceChild(tabElement, tabPlaceholderElement);

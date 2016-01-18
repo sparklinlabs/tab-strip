@@ -5,24 +5,21 @@ Features reorderable and closable tabs.
 
 ## How to install
 
-```
-npm install tab-strip
-```
+    npm install tab-strip
 
 ## Usage
 
-Check out the [live demo](http://sparklinlabs.bitbucket.org/tab-strip/doc/demo/) and its [source code](https://bitbucket.org/sparklinlabs/tab-strip/src/tip/src/demo/).
+Check out the [live demo](http://sparklinlabs.github.io/tab-strip/) and its [source code](https://github.com/sparklinlabs/tab-strip/blob/master/src/index.jade).
 
  * Include ``TabStrip.js`` in your page.
  * Create a container element, call ``tabStrip = new TabStrip(container)``.
  * Create a list item element (``<li>``), put whatever you want inside.
  * Use ``tabStrip.tabsRoot.appendChild(item)``.
 
+See [index.d.ts](https://github.com/sparklinlabs/tab-strip/blob/master/index.d.ts) for the full API.
+
 ## Building from source
 
-Make sure you have [Node.js](http://nodejs.org/) 0.10+ installed.
-
- * Clone the Mercurial repository from ``https://bitbucket.org/sparklinlabs/tab-strip`
- * Run ``npm install`` once
- * Run ``gulp`` to build ``lib/TabStrip.js`` from the TypeScript source.
- * Run ``gulp watch`` to start a watcher that will rebuild it anytime you make a change.
+ * Make sure you have a recent version of [Node.js](http://nodejs.org/) installed.
+ * Clone the repository from `https://github.com/sparklinlabs/tab-strip` and run `npm install` once
+ * Run `npm run build` to build once or `npm run watch` to start a watcher that will rebuild when changes are detecting
