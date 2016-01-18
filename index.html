@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><link rel="stylesheet" href="index.css"><script src="TabStrip.js"></script></head><body><header><h1><a href="https://github.com/sparklinlabs">sparklinlabs</a> / <a href="https://github.com/sparklinlabs/tab-strip">tab-strip</a></h1><p>An HTML5 draggable tab strip widget</p></header><div class="tabs-container"></div><div class="panes"><div class="pane-1 active"><h1>Pane 1</h1><p>This is a demo of the <a href="http://npmjs.com/package/tab-strip">tab-strip package</a>.</p></div><div class="pane-2"><h1>Pane 2</h1></div><div class="pane-3"><h1>Pane 3</h1></div></div><script>var tabStrip = new TabStrip(document.querySelector(".tabs-container"));
+
+var panes = document.querySelectorAll(".panes > div");
+for (var i = 0; i < panes.length; i++) {
+  var pane = panes[i];
+
+  var tab = document.createElement("li");
+  tab.dataset.pane = "pane-" + (i+1);
+
+  var tabLabel = document.createElement("span");
+  tabLabel.classList.add("label");
+  tabLabel.textContent = "Pane " + (i+1);
+  tab.appendChild(tabLabel);
+
+  tabStrip.tabsRoot.appendChild(tab);
+
+  if (i === 0) {
+    tab.classList.add("active");
+    document.querySelector(".panes ." + tab.dataset.pane).classList.add("active");
+  }
+}
+
+tabStrip.on("activateTab", function(tab) {
+  tabStrip.tabsRoot.querySelector(".active").classList.remove("active");
+  tab.classList.add("active");
+
+  document.querySelector(".panes > .active").classList.remove("active");
+  document.querySelector(".panes ." + tab.dataset.pane).classList.add("active");
+});</script></body></html>

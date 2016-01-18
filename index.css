@@ -1,0 +1,90 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+body {
+  font-family: sans-serif;
+  font-size: 14px;
+  display: flex;
+  flex-flow: column;
+  background-color: #eee;
+}
+a {
+  color: #00f;
+}
+a:hover {
+  text-decoration: none;
+}
+header {
+  padding: 1em;
+  display: flex;
+  align-items: center;
+}
+header h1,
+header p {
+  margin: 0;
+}
+header p {
+  margin-left: 1em;
+}
+.tabs-container {
+  margin: 0 1em;
+}
+.panes {
+  background-color: #fff;
+  border: 1px solid #888;
+  flex: 1;
+  margin: 0 1em;
+  padding: 1em;
+  overflow-y: auto;
+}
+.panes > :not(.active) {
+  display: none;
+}
+.panes h1 {
+  margin: 0;
+  margin-bottom: 0.5em;
+}
+ol.tab-strip {
+  height: 30px;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  cursor: default;
+}
+ol.tab-strip > li {
+  display: flex;
+  align-items: center;
+  width: 160px;
+  height: 30px;
+  border: 1px solid #bbb;
+  border-bottom: none;
+  background: #ddd;
+}
+ol.tab-strip > li.dragged {
+  position: absolute;
+  z-index: 1000;
+}
+ol.tab-strip > li.drop-placeholder {
+  background: none;
+  border: none;
+}
+ol.tab-strip > li:not(.active) {
+  color: #888;
+}
+ol.tab-strip > li:hover {
+  background: #eee;
+}
+ol.tab-strip > li.active {
+  background: #fff;
+}
+ol.tab-strip > li .label {
+  padding: 0 0.5em;
+/* IMPORTANT: Let mouse events pass through to the tab button */
+  pointer-events: none;
+}
