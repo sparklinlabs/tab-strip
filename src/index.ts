@@ -8,25 +8,28 @@ class TabStrip extends EventEmitter {
   constructor(container: HTMLElement) {
     super();
 
-    this.tabsRoot = document.createElement("ol");
-    this.tabsRoot.classList.add("tab-strip");
-    container.appendChild(this.tabsRoot);
+    this.tabsRoot = container.querySelector(":scope > ol.tab-strip") as HTMLOListElement;
+    if (this.tabsRoot == null) {
+      this.tabsRoot = document.createElement("ol");
+      this.tabsRoot.classList.add("tab-strip");
+      container.appendChild(this.tabsRoot);
+    }
 
-    this.tabsRoot.addEventListener("mousedown", this._onTabMouseDown);
-    this.tabsRoot.addEventListener("mouseup", this._onTabMouseUp);
+    this.tabsRoot.addEventListener("mousedown", this.onTabMouseDown);
+    this.tabsRoot.addEventListener("mouseup", this.onTabMouseUp);
   }
 
-  _onTabMouseUp = (event: MouseEvent) => {
-    let tabElement = event.target as HTMLLIElement;
+  private onTabMouseUp = (event: MouseEvent) => {
+    const tabElement = event.target as HTMLLIElement;
 
     // Only handle middle-click and ignore clicks outside any tab
     if (event.button !== 1 || tabElement.parentElement !== this.tabsRoot) return;
 
     this.emit("closeTab", tabElement);
-  };
+  }
 
-  _onTabMouseDown = (event: MouseEvent) => {
-    let tabElement = event.target as HTMLLIElement;
+  private onTabMouseDown = (event: MouseEvent) => {
+    const tabElement = event.target as HTMLLIElement;
 
     // Only handle left-click
     if (event.button !== 0 || tabElement.parentElement !== this.tabsRoot) return;
@@ -34,26 +37,24 @@ class TabStrip extends EventEmitter {
     this.emit("activateTab", tabElement);
 
     // Tab reordering
-    let tabRect = tabElement.getBoundingClientRect();
-    let leftOffsetFromMouse = tabRect.left - event.clientX;
+    const tabRect = tabElement.getBoundingClientRect();
+    const leftOffsetFromMouse = tabRect.left - event.clientX;
     let hasDragged = false;
 
     tabElement.classList.add("dragged");
+    tabElement.style.width = `${tabRect.width}px`;
 
-    // FIXME: Hard-coded border?
-    tabElement.style.width = `${tabRect.width + 1}px`;
-
-    // NOTE: set/releaseCapture aren"t supported in Chrome yet
+    // NOTE: set/releaseCapture aren't supported in Chrome yet
     // hence the conditional call
     if ((tabElement as any).setCapture != null) (tabElement as any).setCapture();
 
-    let tabPlaceholderElement = document.createElement("li") as HTMLLIElement;
+    const tabPlaceholderElement = document.createElement("li") as HTMLLIElement;
     tabPlaceholderElement.style.width = `${tabRect.width}px`;
     tabPlaceholderElement.className = "drop-placeholder";
     tabElement.parentElement.insertBefore(tabPlaceholderElement, tabElement.nextSibling);
 
-    let updateDraggedTab = (clientX: number) => {
-      let tabsRootRect = this.tabsRoot.getBoundingClientRect();
+    const updateDraggedTab = (clientX: number) => {
+      const tabsRootRect = this.tabsRoot.getBoundingClientRect();
 
       let tabLeft = Math.max(Math.min(clientX + leftOffsetFromMouse, tabsRootRect.right - tabRect.width), tabsRootRect.left);
       if (hasDragged || Math.abs(tabLeft - tabRect.left) >= 10) {
@@ -71,7 +72,7 @@ class TabStrip extends EventEmitter {
           if (otherTabElement === tabElement) otherTabElement = otherTabElement.previousSibling as HTMLLIElement;
           if (otherTabElement == null) break;
 
-          let otherTabCenter = otherTabElement.getBoundingClientRect().left + otherTabElement.getBoundingClientRect().width / 2;
+          const otherTabCenter = otherTabElement.getBoundingClientRect().left + otherTabElement.getBoundingClientRect().width / 2;
           if (otherTabCenter < tabLeft) break;
 
           otherTabElement.parentElement.insertBefore(tabPlaceholderElement, otherTabElement);
@@ -83,7 +84,7 @@ class TabStrip extends EventEmitter {
           if (otherTabElement === tabElement) otherTabElement = otherTabElement.nextSibling as HTMLLIElement;
           if (otherTabElement == null) break;
 
-          let otherTabCenter = otherTabElement.getBoundingClientRect().left + otherTabElement.getBoundingClientRect().width / 2;
+          const otherTabCenter = otherTabElement.getBoundingClientRect().left + otherTabElement.getBoundingClientRect().width / 2;
           if (tabLeft + tabRect.width < otherTabCenter) break;
 
           otherTabElement.parentElement.insertBefore(tabPlaceholderElement, otherTabElement.nextSibling);
@@ -93,11 +94,11 @@ class TabStrip extends EventEmitter {
       if (tabPlaceholderElement.nextSibling === tabElement) {
         tabElement.parentElement.insertBefore(tabPlaceholderElement, tabElement.nextSibling);
       }
-    };
+    }
 
-    let onDragTab = (event: MouseEvent) => { updateDraggedTab(event.clientX); };
+    const onDragTab = (event: MouseEvent) => { updateDraggedTab(event.clientX); };
 
-    let onDropTab = (event: MouseEvent) => {
+    const onDropTab = (event: MouseEvent) => {
       // NOTE: set/releaseCapture aren't supported in Chrome yet
       // hence the conditional call
       if ((tabElement as any).releaseCapture != null) (tabElement as any).releaseCapture();

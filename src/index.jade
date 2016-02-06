@@ -12,42 +12,76 @@ html
       p An HTML5 draggable tab strip widget
     
     .tabs-container
+      ol.tab-strip
+        li(data-pane="home-pane").active
+          span.label Home
     .panes
-      div.pane-1.active
-        h1 Pane 1
+      .home-pane.active
+        h1 Home pane
 
         p This is a demo of the <a href="http://npmjs.com/package/tab-strip">tab-strip package</a>.
-      div.pane-2
-        h1 Pane 2
-      div.pane-3
-        h1 Pane 3
+
+        button.open Open another tab
     script.
       var tabStrip = new TabStrip(document.querySelector(".tabs-container"));
 
-      var panes = document.querySelectorAll(".panes > div");
-      for (var i = 0; i < panes.length; i++) {
-        var pane = panes[i];
-
-        var tab = document.createElement("li");
-        tab.dataset.pane = "pane-" + (i+1);
-
-        var tabLabel = document.createElement("span");
-        tabLabel.classList.add("label");
-        tabLabel.textContent = "Pane " + (i+1);
-        tab.appendChild(tabLabel);
-
-        tabStrip.tabsRoot.appendChild(tab);
-
-        if (i === 0) {
-          tab.classList.add("active");
-          document.querySelector(".panes ." + tab.dataset.pane).classList.add("active");
-        }
-      }
-
-      tabStrip.on("activateTab", function(tab) {
+      tabStrip.on("activateTab", function(tabElt) {
         tabStrip.tabsRoot.querySelector(".active").classList.remove("active");
-        tab.classList.add("active");
+        tabElt.classList.add("active");
 
         document.querySelector(".panes > .active").classList.remove("active");
-        document.querySelector(".panes ." + tab.dataset.pane).classList.add("active");
+        document.querySelector(".panes ." + tabElt.dataset["pane"]).classList.add("active");
       });
+
+      var nextPaneIndex = 1;
+      var openTabButton = document.querySelector(".home-pane button.open");
+      openTabButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        
+        var tabElt = document.createElement("li");
+        tabElt.dataset["pane"] = "pane-" + nextPaneIndex;
+
+        var labelElt = document.createElement("span");
+        labelElt.className = "label";
+        labelElt.textContent = "Pane " + nextPaneIndex;
+        tabElt.appendChild(labelElt);
+
+        var closeButtonElt = document.createElement("button");
+        closeButtonElt.className = "close";
+        closeButtonElt.textContent = "×";
+        tabElt.appendChild(closeButtonElt);
+
+        tabStrip.tabsRoot.appendChild(tabElt);
+
+        var paneElt = document.createElement("div");
+        document.querySelector(".panes").appendChild(paneElt);
+        paneElt.className = "pane-" + nextPaneIndex;
+        paneElt.textContent = "Pane " + nextPaneIndex + " can be closed by middle-clicking on the tab.";
+
+        nextPaneIndex++;
+      });
+
+      tabStrip.on("closeTab", onCloseTab);
+
+      tabStrip.tabsRoot.addEventListener("click", function (event) {
+        if (event.target.tagName !== "BUTTON" || event.target.className !== "close") return;
+
+        event.preventDefault();
+        onCloseTab(event.target.parentElement);
+      });
+
+      function onCloseTab(tabElt) {
+        if (tabElt.dataset["pane"] === "home-pane") return;
+
+        if (tabElt.classList.contains("active")) {
+          document.querySelector(".panes > .active").classList.remove("active");
+
+          var activeTabElt = tabElt.nextElementSibling;
+          if (activeTabElt == null) activeTabElt = tabElt.previousElementSibling;
+          activeTabElt.classList.add("active");
+          var activePaneElt = document.querySelector(".panes ." + activeTabElt.dataset["pane"]);
+          activePaneElt.classList.add("active");
+        }
+
+        tabElt.parentElement.removeChild(tabElt);
+      }
