@@ -43,6 +43,7 @@ class TabStrip extends EventEmitter {
 
     tabElement.classList.add("dragged");
     tabElement.style.width = `${tabRect.width}px`;
+    tabElement.style.flexBasis = `${tabRect.width}px`;
 
     // NOTE: set/releaseCapture aren't supported in Chrome yet
     // hence the conditional call
@@ -50,6 +51,7 @@ class TabStrip extends EventEmitter {
 
     const tabPlaceholderElement = document.createElement("li") as HTMLLIElement;
     tabPlaceholderElement.style.width = `${tabRect.width}px`;
+    tabPlaceholderElement.style.flexBasis = `${tabRect.width}px`;
     tabPlaceholderElement.className = "drop-placeholder";
     tabElement.parentElement.insertBefore(tabPlaceholderElement, tabElement.nextSibling);
 
@@ -112,6 +114,7 @@ class TabStrip extends EventEmitter {
       tabElement.classList.remove("dragged");
       tabElement.style.left = "";
       tabElement.style.width = "";
+      tabElement.style.flexBasis = "";
 
       document.removeEventListener("mousemove", onDragTab);
       document.removeEventListener("mouseup", onDropTab);
