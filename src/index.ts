@@ -85,7 +85,7 @@ class TabStrip extends EventEmitter {
           if (otherTabElement == null) break;
 
           const otherTabCenter = otherTabElement.getBoundingClientRect().left + otherTabElement.getBoundingClientRect().width / 2;
-          if (tabLeft + tabRect.width < otherTabCenter) break;
+          if (tabLeft + tabRect.width <= otherTabCenter) break;
 
           otherTabElement.parentElement.insertBefore(tabPlaceholderElement, otherTabElement.nextSibling);
         }
