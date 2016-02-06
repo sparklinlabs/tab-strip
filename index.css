@@ -1,5 +1,9 @@
 * {
   box-sizing: border-box;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 html,
 body {
@@ -36,7 +40,7 @@ header p {
 }
 .panes {
   background-color: #fff;
-  border: 1px solid #888;
+  border: 1px solid #bbb;
   flex: 1;
   margin: 0 1em;
   padding: 1em;
@@ -54,10 +58,11 @@ ol.tab-strip {
   display: flex;
   margin: 0;
   padding: 0;
-  user-select: none;
   cursor: default;
+  margin-right: 1px;
 }
 ol.tab-strip > li {
+  flex: 0 1 160px;
   display: flex;
   align-items: center;
   width: 160px;
@@ -65,14 +70,20 @@ ol.tab-strip > li {
   border: 1px solid #bbb;
   border-bottom: none;
   background: #ddd;
+  padding: 0 0.5em;
+  overflow: hidden;
+  margin-right: -1px;
 }
 ol.tab-strip > li.dragged {
+  flex-basis: 0;
   position: absolute;
   z-index: 1000;
+  flex: 0 0 0;
 }
 ol.tab-strip > li.drop-placeholder {
   background: none;
-  border: none;
+  border: 1px solid rgba(0,0,0,0);
+  border-bottom: none;
 }
 ol.tab-strip > li:not(.active) {
   color: #888;
@@ -84,7 +95,10 @@ ol.tab-strip > li.active {
   background: #fff;
 }
 ol.tab-strip > li .label {
-  padding: 0 0.5em;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 /* IMPORTANT: Let mouse events pass through to the tab button */
   pointer-events: none;
 }

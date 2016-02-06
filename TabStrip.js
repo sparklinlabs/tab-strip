@@ -311,14 +311,14 @@ var TabStrip = (function (_super) {
     function TabStrip(container) {
         var _this = this;
         _super.call(this);
-        this._onTabMouseUp = function (event) {
+        this.onTabMouseUp = function (event) {
             var tabElement = event.target;
             // Only handle middle-click and ignore clicks outside any tab
             if (event.button !== 1 || tabElement.parentElement !== _this.tabsRoot)
                 return;
             _this.emit("closeTab", tabElement);
         };
-        this._onTabMouseDown = function (event) {
+        this.onTabMouseDown = function (event) {
             var tabElement = event.target;
             // Only handle left-click
             if (event.button !== 0 || tabElement.parentElement !== _this.tabsRoot)
@@ -329,9 +329,8 @@ var TabStrip = (function (_super) {
             var leftOffsetFromMouse = tabRect.left - event.clientX;
             var hasDragged = false;
             tabElement.classList.add("dragged");
-            // FIXME: Hard-coded border?
-            tabElement.style.width = (tabRect.width + 1) + "px";
-            // NOTE: set/releaseCapture aren"t supported in Chrome yet
+            tabElement.style.width = tabRect.width + "px";
+            // NOTE: set/releaseCapture aren't supported in Chrome yet
             // hence the conditional call
             if (tabElement.setCapture != null)
                 tabElement.setCapture();
@@ -403,11 +402,14 @@ var TabStrip = (function (_super) {
             document.addEventListener("mousemove", onDragTab);
             document.addEventListener("mouseup", onDropTab);
         };
-        this.tabsRoot = document.createElement("ol");
-        this.tabsRoot.classList.add("tab-strip");
-        container.appendChild(this.tabsRoot);
-        this.tabsRoot.addEventListener("mousedown", this._onTabMouseDown);
-        this.tabsRoot.addEventListener("mouseup", this._onTabMouseUp);
+        this.tabsRoot = container.querySelector(":scope > ol.tab-strip");
+        if (this.tabsRoot == null) {
+            this.tabsRoot = document.createElement("ol");
+            this.tabsRoot.classList.add("tab-strip");
+            container.appendChild(this.tabsRoot);
+        }
+        this.tabsRoot.addEventListener("mousedown", this.onTabMouseDown);
+        this.tabsRoot.addEventListener("mouseup", this.onTabMouseUp);
     }
     return TabStrip;
 })(events_1.EventEmitter);
