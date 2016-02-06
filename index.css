@@ -74,11 +74,14 @@ ol.tab-strip > li {
   overflow: hidden;
   margin-right: -1px;
 }
+ol.tab-strip > li.pinned {
+  flex: 0 1 60px;
+  width: 60px;
+}
 ol.tab-strip > li.dragged {
-  flex-basis: 0;
+  flex: 0 0 0;
   position: absolute;
   z-index: 1000;
-  flex: 0 0 0;
 }
 ol.tab-strip > li.drop-placeholder {
   background: none;

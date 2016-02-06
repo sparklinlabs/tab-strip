@@ -330,12 +330,14 @@ var TabStrip = (function (_super) {
             var hasDragged = false;
             tabElement.classList.add("dragged");
             tabElement.style.width = tabRect.width + "px";
+            tabElement.style.flexBasis = tabRect.width + "px";
             // NOTE: set/releaseCapture aren't supported in Chrome yet
             // hence the conditional call
             if (tabElement.setCapture != null)
                 tabElement.setCapture();
             var tabPlaceholderElement = document.createElement("li");
             tabPlaceholderElement.style.width = tabRect.width + "px";
+            tabPlaceholderElement.style.flexBasis = tabRect.width + "px";
             tabPlaceholderElement.className = "drop-placeholder";
             tabElement.parentElement.insertBefore(tabPlaceholderElement, tabElement.nextSibling);
             var updateDraggedTab = function (clientX) {
@@ -371,7 +373,7 @@ var TabStrip = (function (_super) {
                         if (otherTabElement == null)
                             break;
                         var otherTabCenter = otherTabElement.getBoundingClientRect().left + otherTabElement.getBoundingClientRect().width / 2;
-                        if (tabLeft + tabRect.width < otherTabCenter)
+                        if (tabLeft + tabRect.width <= otherTabCenter)
                             break;
                         otherTabElement.parentElement.insertBefore(tabPlaceholderElement, otherTabElement.nextSibling);
                     }
@@ -395,6 +397,7 @@ var TabStrip = (function (_super) {
                 tabElement.classList.remove("dragged");
                 tabElement.style.left = "";
                 tabElement.style.width = "";
+                tabElement.style.flexBasis = "";
                 document.removeEventListener("mousemove", onDragTab);
                 document.removeEventListener("mouseup", onDropTab);
             };
