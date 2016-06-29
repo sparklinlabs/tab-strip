@@ -41,25 +41,27 @@ class TabStrip extends EventEmitter {
     const leftOffsetFromMouse = tabRect.left - event.clientX;
     let hasDragged = false;
 
-    tabElement.classList.add("dragged");
-    tabElement.style.width = `${tabRect.width}px`;
-
-    // NOTE: set/releaseCapture aren't supported in Chrome yet
-    // hence the conditional call
-    if ((tabElement as any).setCapture != null) (tabElement as any).setCapture();
-
     const tabPlaceholderElement = document.createElement("li") as HTMLLIElement;
     tabPlaceholderElement.style.width = `${tabRect.width}px`;
     tabPlaceholderElement.className = "drop-placeholder";
     tabPlaceholderElement.classList.toggle("pinned", tabElement.classList.contains("pinned"));
-    tabElement.parentElement.insertBefore(tabPlaceholderElement, tabElement.nextSibling);
 
     const updateDraggedTab = (clientX: number) => {
       const tabsRootRect = this.tabsRoot.getBoundingClientRect();
 
       let tabLeft = Math.max(Math.min(clientX + leftOffsetFromMouse, tabsRootRect.right - tabRect.width), tabsRootRect.left);
       if (hasDragged || Math.abs(tabLeft - tabRect.left) >= 10) {
-        hasDragged = true;
+        if (!hasDragged) {
+          tabElement.classList.add("dragged");
+          tabElement.style.width = `${tabRect.width}px`;
+
+          // NOTE: set/releaseCapture aren't supported in Chrome yet
+          // hence the conditional call
+          if ((tabElement as any).setCapture != null) (tabElement as any).setCapture();
+          tabElement.parentElement.insertBefore(tabPlaceholderElement, tabElement.nextSibling);
+
+          hasDragged = true;
+        }
       } else {
         tabLeft = tabRect.left;
       }
@@ -104,15 +106,17 @@ class TabStrip extends EventEmitter {
       // hence the conditional call
       if ((tabElement as any).releaseCapture != null) (tabElement as any).releaseCapture();
 
-      if (tabPlaceholderElement.parentElement != null) {
-        this.tabsRoot.replaceChild(tabElement, tabPlaceholderElement);
-      } else {
-        this.tabsRoot.appendChild(tabElement);
-      }
+      if (hasDragged) {
+        if (tabPlaceholderElement.parentElement != null) {
+          this.tabsRoot.replaceChild(tabElement, tabPlaceholderElement);
+        } else {
+          this.tabsRoot.appendChild(tabElement);
+        }
 
-      tabElement.classList.remove("dragged");
-      tabElement.style.left = "";
-      tabElement.style.width = "";
+        tabElement.classList.remove("dragged");
+        tabElement.style.left = "";
+        tabElement.style.width = "";
+      }
 
       document.removeEventListener("mousemove", onDragTab);
       document.removeEventListener("mouseup", onDropTab);
