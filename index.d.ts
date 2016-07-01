@@ -14,7 +14,7 @@ declare class TabStrip {
   emit(event: string, ...args: any[]): boolean;
   listenerCount(type: string): number;
 
-  on(event: "activeTab", listener: (tab: HTMLLIElement) => any): TabStrip;
+  on(event: "activateTab", listener: (tab: HTMLLIElement) => any): TabStrip;
   on(event: "closeTab", listener: (tab: HTMLLIElement) => any): TabStrip;
 }
 

@@ -1,7 +1,7 @@
 {
   "name": "tab-strip",
   "description": "HTML5 draggable tab strip widget",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "author": "Elisée Maurer <elisee@sparklinlabs.com>",
   "repository": {
     "type": "git",
